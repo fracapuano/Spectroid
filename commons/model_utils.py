@@ -62,7 +62,7 @@ class Trainer:
         step = 0
         for epoch in (training_bar:=tqdm(range(n_epochs))): 
             # loop over training data
-            for batch in self.train_loader: 
+            for batch in self.train_loader:
                 labels = batch["labels"].to(device)
                 # zerograd optimizer
                 self.optimizer.zero_grad()

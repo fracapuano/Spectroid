@@ -7,6 +7,7 @@ from .model import SpecterClassifier
 from .model_utils import Trainer
 from torch.optim import AdamW
 
+
 classification_heads = {
     "MESH":{
         "CH1": [nn.Linear(in_features=768, out_features=11)],
@@ -30,8 +31,7 @@ classification_heads = {
     }
 }
 
-class Experiment: 
-    """Experiment class. Used to handle the experimental setting"""
+class Experiment:
     def __init__(self, config:dict, dataset:Dataset, models_path:str="trainedmodels", track:bool=True, verbose:int=1): 
         
         self.config = config
@@ -89,51 +89,51 @@ class Experiment:
             )
             print("Number of parameters (MeSH model): {:.4e}".format(total_params))
 
-        def perform_training(self):
-            """Performs training using prompted configuration."""
+    def perform_training(self):
+        """Performs training using prompted configuration."""
 
-            # splitting mesh data into training and test data
-            splits = self.dataset.train_test_split(test_size=self.config["test_size"])
-            # instantiate an optimizer
-            optimizer = AdamW(self.model.parameters(), lr=self.config["learning_rate"])
-            # define a classification loss function
-            loss_function = torch.nn.CrossEntropyLoss()
-            # instantiate a trainer object
-            trainer = Trainer(
-                model=self.model, 
-                splits=splits,
-                optimizer=optimizer,
-                loss_function=loss_function,
-                batch_size=self.config["batch_size"]
-                )
-            # perform training
-            trainer.do_train(n_epochs=self.config["epochs"], models_prefix=self.config["models_prefix"])
-            # saves last model
-            torch.save(self.model.state_dict(), self.models_path + f"/{self.task}_{self.head_type}.pth")
-            # stops wandb
-            wandb.finish()
-        
-        def load_run(self): 
-            """Loads a pre-trained model given the considered configuration"""
-            raise NotImplementedError("this method has not been implemented!")
-
-        def test_model(self):
-            """Performs testing."""
-            # splitting mesh data into training and test data
-            splits = self.dataset.train_test_split(test_size=self.config["test_size"])
-            # instantiate an optimizer
-            optimizer = AdamW(self.model.parameters(), lr=self.config["learning_rate"])
-            # define a classification loss function
-            loss_function = torch.nn.CrossEntropyLoss()
-            
-            tester= Trainer(
-                model=self.model,
-                splits=splits,
-                optimizer=optimizer, 
-                loss_function=loss_function,
-                batch_size=32
+        # splitting mesh data into training and test data
+        splits = self.dataset.train_test_split(test_size=self.config["test_size"])
+        # instantiate an optimizer
+        optimizer = AdamW(self.model.parameters(), lr=self.config["learning_rate"])
+        # define a classification loss function
+        loss_function = torch.nn.CrossEntropyLoss()
+        # instantiate a trainer object
+        trainer = Trainer(
+            model=self.model, 
+            splits=splits,
+            optimizer=optimizer,
+            loss_function=loss_function,
+            batch_size=self.config["batch_size"]
             )
+        # perform training
+        trainer.do_train(n_epochs=self.config["epochs"], models_prefix=self.config["models_prefix"])
+        # saves last model
+        torch.save(self.model.state_dict(), self.models_path + f"/{self.task}_{self.head_type}.pth")
+        # stops wandb
+        wandb.finish()
+        
+    def load_run(self): 
+        """Loads a pre-trained model given the considered configuration"""
+        raise NotImplementedError("this method has not been implemented!")
 
-            avg_f1 = tester.do_test()
-            
-            print("\nAverage F1-Score {:.4f}".format(avg_f1))
+    def test_model(self):
+        """Performs testing."""
+        # splitting mesh data into training and test data
+        splits = self.dataset.train_test_split(test_size=self.config["test_size"])
+        # instantiate an optimizer
+        optimizer = AdamW(self.model.parameters(), lr=self.config["learning_rate"])
+        # define a classification loss function
+        loss_function = torch.nn.CrossEntropyLoss()
+        
+        tester= Trainer(
+            model=self.model,
+            splits=splits,
+            optimizer=optimizer, 
+            loss_function=loss_function,
+            batch_size=32
+        )
+
+        avg_f1 = tester.do_test()
+        
+        print("\nAverage F1-Score {:.4f}".format(avg_f1))
