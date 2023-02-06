@@ -6,5 +6,5 @@ rich
 scikit_learn
 torch
 tqdm
-transformers
+transformers<4.7, >=4.1
 wandb
