@@ -1,5 +1,6 @@
 import torch.nn as nn
 import torch
+from copy import deepcopy as copy
 
 class SpecterClassifier(nn.Module):
     def __init__(
@@ -7,7 +8,7 @@ class SpecterClassifier(nn.Module):
         base_model, 
         n_labels:int, 
         n_layers:int=2, 
-        n_units:int=512,
+        n_units:int=64,
         activation_function:str="relu", 
         use_gpu:bool=True,
         use_dropout:bool=False,
@@ -20,7 +21,7 @@ class SpecterClassifier(nn.Module):
             n_layers (int, optional): Number of layers in the classification head. 
                                       Defaults to 2.
             n_units (int, optional): Number of units in each hidden layer of the
-                                     classification head. Defaults to 512.
+                                     classification head. Defaults to 64.
             activation_function (str, optional): Activation function to be used in the
                                                  classification head. Defaults to ReLU.
             use_gpu (bool, optional): Whether or not to use an available GPU. Defaults to True.
@@ -32,7 +33,7 @@ class SpecterClassifier(nn.Module):
         super().__init__()
 
         # specter model
-        self.model = base_model
+        self.model = copy(base_model)
 
         # accessing output dimension of base_model
         *_, prelast, _ = self.model.modules()
