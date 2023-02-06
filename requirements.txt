@@ -1,0 +1,10 @@
+datasets
+fastlangid
+numpy
+pandas
+rich
+scikit_learn
+torch
+tqdm
+transformers
+wandb
