@@ -89,7 +89,7 @@ class Trainer:
                     })
             
             # saving the model at each epoch - for diagnostics purposes
-            model_name = models_prefix + f"epoch_{epoch}.pth"
+            model_name = "checkpoints/" + models_prefix + f"epoch_{epoch}.pth"
             torch.save(self.model.cpu().state_dict(), model_name)
 
     def do_test(self)->float: 
