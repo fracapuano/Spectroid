@@ -136,11 +136,9 @@ def embed_data(model:torch.nn.Module, data:Dataset, batch_size:int=32)->torch.Te
     """
     dataloader = hf_to_dataloader(hf=data, batch_size=batch_size)
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    
     with torch.no_grad():
+        embeddings = []
         for batch in tqdm(dataloader, desc="Obtaining embeddings"):
-            print(i)
-            i += 1
             # moving batch of data on target device
             batch = {k: v.to(device) for k, v in batch.items()}
             # forwarding batch of data through the considered network
@@ -150,6 +148,5 @@ def embed_data(model:torch.nn.Module, data:Dataset, batch_size:int=32)->torch.Te
 
             del batch
             torch.cuda.empty_cache()
-        embeddings = torch.tensor(embeddings)
     
-    return embeddings.reshape((-1, 768))  # specter embedding dimension
+    return torch.cat(embeddings)
