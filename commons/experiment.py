@@ -107,7 +107,7 @@ class Experiment:
             batch_size=self.config["batch_size"]
             )
         # perform training
-        trainer.do_train(n_epochs=self.config["epochs"], models_prefix=self.config["models_prefix"])
+        trainer.do_train(n_epochs=self.config["epochs"], log_every=5, models_prefix=self.config["models_prefix"])
         # saves last model
         torch.save(self.model.state_dict(), self.models_path + f"/{self.task}_{self.head_type}.pth")
         # stops wandb

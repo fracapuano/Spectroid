@@ -75,9 +75,6 @@ class Trainer:
                 # step parameters
                 self.optimizer.step()
                 
-                if self.use_scheduler:
-                    self.scheduler.step()
-
                 training_bar.set_description("Training Loss: {:.4f}".format(loss_value.item()))
                 step += 1
 
@@ -85,30 +82,32 @@ class Trainer:
                     training_bar.set_description("Training Loss: {:.4f}".format(loss_value.item()))
                     wandb.log({
                         "CrossEntropy-TrainingLoss": loss_value.item(),
-                        "CrossEntropy-ValLoss": self.do_test()
+                        "MacroF1-Val": self.do_test(tqdm_mute=True)
                     })
             
             # saving the model at each epoch - for diagnostics purposes
             model_name = "checkpoints/" + models_prefix + f"epoch_{epoch}.pth"
             torch.save(self.model.cpu().state_dict(), model_name)
 
-    def do_test(self)->float: 
+    def do_test(self, tqdm_mute:bool=False)->float: 
         """Performs testing for the considered model. Tests f1 score in particular.
         
         Args: 
-            labels (list): List of labels as per problem specification
+            tqdm_mute (bool, optional): Whether or not to show a progress bar iterating during the testing phase.
         
         Returns: 
-            float: Average f1 score over all batches in test set.
+            float: Macro-Average f1 score over all batches in test set.
         """
         
         # set testing mode
         self.model.eval()
 
+        progress_bar = tqdm(self.test_loader) if not tqdm_mute else self.test_loader
+
         batches_f1 = torch.zeros(len(self.test_loader))
         with torch.no_grad():
             idx = 0
-            for batch in tqdm(self.test_loader):
+            for batch in progress_bar:
                 output = self.model(batch).cpu()
                 y_true = batch["labels"]
                 # max(axis=1) gives the maximal value and maximal index too
