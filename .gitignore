@@ -134,4 +134,4 @@ dmypy.json
 data/
 
 # wandb
-*/wandb
+wandb/
