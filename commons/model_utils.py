@@ -81,8 +81,7 @@ class Trainer:
                 if step % log_every == 0: 
                     training_bar.set_description("Training Loss: {:.4f}".format(loss_value.item()))
                     wandb.log({
-                        "CrossEntropy-TrainingLoss": loss_value.item(),
-                        "MacroF1-Val": self.do_test(tqdm_mute=True)
+                        "CrossEntropy-TrainingLoss": loss_value.item()
                     })
             
             # saving the model at each epoch - for diagnostics purposes
