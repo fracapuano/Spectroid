@@ -20,13 +20,13 @@ classification_heads = {
         "project_name": "MFs-MeSH classification"
     },
     "MAG":{
-        "CH1": nn.Linear(in_features=768, out_features=19),
+        "CH1": [nn.Linear(in_features=768, out_features=19)],
         "CH2": [
             nn.Linear(in_features=768, out_features=64), 
             nn.ReLU(), 
-            nn.Linear(in_features=64, out_features=11)
+            nn.Linear(in_features=64, out_features=19)
             ],
-        "CH3": {"n_layers":5, "n_units":64}, 
+        "CH3": {"n_layers":5, "n_units":64},
         "project_name": "MFs-MAG classification"
     }
 }
@@ -113,9 +113,26 @@ class Experiment:
         # stops wandb
         wandb.finish()
         
-    def load_run(self): 
-        """Loads a pre-trained model given the considered configuration"""
-        raise NotImplementedError("this method has not been implemented!")
+    def load_run(self, checkpoint:bool=False, epoch:int=None): 
+        """Loads a pre-trained model given the considered configuration
+        
+        Args: 
+            checkpoint (bool, optional): When True, considers models in the `checkpoints` folder, otherwise downlods 
+                                         from `trainedmodels`. Defaults to True.
+            epoch (int, optional): The epoch to download. Can be not None only when checkpoint is True. Defaults to 
+                                   None.
+        """
+        # sanity check
+        if not checkpoint and epoch is not None: 
+            print(f"Checkpoint:{checkpoint} - epoch:{epoch}")
+            raise ValueError("Epoch can be not None only when checkpoint is True")
+        
+        if checkpoint:
+            model_path = f"checkpoints/{self.models_prefix}epoch_{epoch}.pth"
+        elif not checkpoint or checkpoint is None:
+            model_path=f"trainedmodels/{self.task}_{self.head_type}.pth"
+        
+        print(f"Model {model_path} loaded successfully!")
 
     def test_model(self):
         """Performs testing."""
