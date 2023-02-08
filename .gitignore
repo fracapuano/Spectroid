@@ -135,3 +135,6 @@ data/
 
 # wandb
 wandb/
+
+trainedmodels/
+checkpoints/
