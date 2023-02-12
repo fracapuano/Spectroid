@@ -16,6 +16,13 @@ classification_heads = {
             nn.ReLU(), 
             nn.Linear(in_features=64, out_features=11)
             ],
+        "CH2.2": [
+            nn.Linear(in_features=768, out_features=64), 
+            nn.ReLU(), 
+            nn.Linear(in_features=64, out_features=64), 
+            nn.ReLU(), 
+            nn.Linear(in_features=64, out_features=11)
+            ],
         "CH3": {"n_layers":5, "n_units":64},
         "project_name": "MFs-MeSH classification"
     },
@@ -23,6 +30,13 @@ classification_heads = {
         "CH1": [nn.Linear(in_features=768, out_features=19)],
         "CH2": [
             nn.Linear(in_features=768, out_features=64), 
+            nn.ReLU(), 
+            nn.Linear(in_features=64, out_features=19)
+            ],
+        "CH2.2": [
+            nn.Linear(in_features=768, out_features=64), 
+            nn.ReLU(), 
+            nn.Linear(in_features=64, out_features=64), 
             nn.ReLU(), 
             nn.Linear(in_features=64, out_features=19)
             ],
@@ -49,12 +63,14 @@ class Experiment:
         
         if config["models_prefix"].endswith("1"):
             self.head_type = "CH1"
-        elif config["models_prefix"].endswith("2"):
+        elif config["models_prefix"].endswith("_2"):  # mag/mesh_2
             self.head_type = "CH2"
+        elif config["models_prefix"].endswith("_2.2"):  # mag/mesh_*2.2*
+            self.head_type = "CH2.2"
         elif config["models_prefix"].endswith("3"):
             self.head_type = "CH3"
-        else: 
-            raise ValueError(f"Only accepted heads are [1,2,3] (prompted {config['models_prefix'].split('_')[1]})")
+        else:
+            raise Warning(f"Only accepted heads are [1, 2, 2.2, 3] (prompted {config['models_prefix'].split('_')[1]})")
 
         if self.track: 
             # track experiments
@@ -78,7 +94,7 @@ class Experiment:
             use_batchnorm=config["batchnorm"]
             )
         
-        if self.head_type == "CH1" or self.head_type == "CH2":
+        if self.head_type != "CH3" and self.head_type is not None:
             self.model.set_classification_head(classification_heads[self.task][self.head_type])
 
         if verbose>0:
