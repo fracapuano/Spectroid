@@ -54,7 +54,7 @@ class Experiment:
         self.track = track
 
         # splitting mesh data into training and test data
-        self.splits = self.dataset.train_test_split(test_size=self.config["test_size"])
+        self.splits = self.dataset.train_test_split(test_size=self.config["test_size"], seed=321)
 
         # input sanity check  
         if config["models_prefix"].startswith("MAG"):
@@ -147,7 +147,7 @@ class Experiment:
         
         if checkpoint:
             path = "checkpoints/" if model_path is None else model_path
-            model_name = f"{self.models_prefix}epoch_{epoch}.pth"
+            model_name = f"{self.config['models_prefix']}epoch_{epoch}.pth"
         elif not checkpoint or checkpoint is None:
             path = "trainedmodels/" if model_path is None else model_path
             model_name=f"{self.task}_{self.head_type}.pth"
