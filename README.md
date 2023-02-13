@@ -1,4 +1,8 @@
-[plot](https://ibb.co/nD93F7L)
+<p align="center">
+   <a href="https://ibb.co/nD93F7L">
+      <img width=250 src="https://i.ibb.co/qRK0vNr/spectroid-logo.png" alt="spectroid-logo" border="0">
+   </a>
+</p>
 
 # *SPECTROID*: A Centroid-Based Citation-Aware Approach to Paper Classification
 
