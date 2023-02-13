@@ -129,10 +129,11 @@ class Experiment:
         if self.track: # stops wandb
             wandb.finish()
         
-    def load_run(self, checkpoint:bool=False, epoch:int=None): 
+    def load_run(self, model_path:str=None, checkpoint:bool=False, epoch:int=None): 
         """Loads a pre-trained model given the considered configuration
         
         Args: 
+            model_path (str, optional)
             checkpoint (bool, optional): When True, considers models in the `checkpoints` folder, otherwise downlods 
                                          from `trainedmodels`. Defaults to True.
             epoch (int, optional): The epoch to download. Can be not None only when checkpoint is True. Defaults to 
@@ -144,12 +145,14 @@ class Experiment:
             raise ValueError("Epoch can be not None only when checkpoint is True")
         
         if checkpoint:
-            model_path = f"checkpoints/{self.models_prefix}epoch_{epoch}.pth"
+            path = "checkpoints/" if model_path is None else model_path
+            model_name = f"{self.models_prefix}epoch_{epoch}.pth"
         elif not checkpoint or checkpoint is None:
-            model_path=f"trainedmodels/{self.task}_{self.head_type}.pth"
+            path = "trainedmodels/" if model_path is None else model_path
+            model_name=f"{self.task}_{self.head_type}.pth"
         
         # loads model
-        self.model.load_state_dict(torch.load(model_path))
+        self.model.load_state_dict(torch.load(path + model_path))
         print(f"Model {model_path} loaded successfully!")
 
     def test_model(self):
