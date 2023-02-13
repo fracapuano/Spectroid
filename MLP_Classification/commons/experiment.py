@@ -54,7 +54,7 @@ class Experiment:
         self.track = track
 
         # splitting mesh data into training and test data
-        self.splits = self.dataset.train_test_split(test_size=self.config["test_size"], seed=321)  # specter's seed 
+        self.splits = self.dataset.train_test_split(test_size=self.config["test_size"])
 
         # input sanity check  
         if config["models_prefix"].startswith("MAG"):
@@ -154,7 +154,7 @@ class Experiment:
         
         # loads model
         self.model.load_state_dict(torch.load(path + model_name))
-        print(f"Model {model_path} loaded successfully!")
+        print(f"Model {path + model_name} loaded successfully!")
 
     def test_model(self):
         """Performs testing."""
