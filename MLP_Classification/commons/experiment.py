@@ -46,15 +46,15 @@ classification_heads = {
 }
 
 class Experiment:
-    def __init__(self, config:dict, dataset:Dataset, models_path:str="trainedmodels", track:bool=True, verbose:int=1): 
+    def __init__(self, config:dict, dataset:Dataset, splits:dict, models_path:str="trainedmodels", track:bool=True, verbose:int=1): 
         
         self.config = config
         self.dataset = dataset
         self.models_path = models_path
         self.track = track
 
-        # splitting mesh data into training and test data
-        self.splits = self.dataset.train_test_split(test_size=self.config["test_size"], seed=321)
+        # splitting data into training and test data
+        self.splits = splits
 
         # input sanity check  
         if config["models_prefix"].startswith("MAG"):
