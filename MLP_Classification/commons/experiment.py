@@ -53,6 +53,9 @@ class Experiment:
         self.models_path = models_path
         self.track = track
 
+        # splitting mesh data into training and test data
+        self.splits = self.dataset.train_test_split(test_size=self.config["test_size"])
+
         # input sanity check  
         if config["models_prefix"].startswith("MAG"):
             self.task = "MAG" 
@@ -108,8 +111,6 @@ class Experiment:
     def perform_training(self):
         """Performs training using prompted configuration."""
 
-        # splitting mesh data into training and test data
-        splits = self.dataset.train_test_split(test_size=self.config["test_size"])
         # instantiate an optimizer
         optimizer = AdamW(self.model.parameters(), lr=self.config["learning_rate"])
         # define a classification loss function
@@ -117,7 +118,7 @@ class Experiment:
         # instantiate a trainer object
         trainer = Trainer(
             model=self.model, 
-            splits=splits,
+            splits=self.splits,
             optimizer=optimizer,
             loss_function=loss_function,
             batch_size=self.config["batch_size"]
@@ -133,7 +134,7 @@ class Experiment:
         """Loads a pre-trained model given the considered configuration
         
         Args: 
-            model_path (str, optional)
+            model_path (str, optional): Directory where to find the model considered.
             checkpoint (bool, optional): When True, considers models in the `checkpoints` folder, otherwise downlods 
                                          from `trainedmodels`. Defaults to True.
             epoch (int, optional): The epoch to download. Can be not None only when checkpoint is True. Defaults to 
@@ -152,13 +153,11 @@ class Experiment:
             model_name=f"{self.task}_{self.head_type}.pth"
         
         # loads model
-        self.model.load_state_dict(torch.load(path + model_path))
+        self.model.load_state_dict(torch.load(path + model_name))
         print(f"Model {model_path} loaded successfully!")
 
     def test_model(self):
         """Performs testing."""
-        # splitting mesh data into training and test data
-        splits = self.dataset.train_test_split(test_size=self.config["test_size"])
         # instantiate an optimizer
         optimizer = AdamW(self.model.parameters(), lr=self.config["learning_rate"])
         # define a classification loss function
@@ -166,7 +165,7 @@ class Experiment:
         
         tester= Trainer(
             model=self.model,
-            splits=splits,
+            splits=self.splits,
             optimizer=optimizer, 
             loss_function=loss_function,
             batch_size=32
