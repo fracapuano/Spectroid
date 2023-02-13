@@ -149,7 +149,7 @@ class Experiment:
             model_path=f"trainedmodels/{self.task}_{self.head_type}.pth"
         
         # loads model
-        self.model.load_state_dict(model_path)
+        self.model.load_state_dict(torch.load(model_path))
         print(f"Model {model_path} loaded successfully!")
 
     def test_model(self):
