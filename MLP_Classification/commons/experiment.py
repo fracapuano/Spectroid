@@ -54,7 +54,7 @@ class Experiment:
         self.track = track
 
         # splitting mesh data into training and test data
-        self.splits = self.dataset.train_test_split(test_size=self.config["test_size"])
+        self.splits = self.dataset.train_test_split(test_size=self.config["test_size"], seed=321)  # specter's seed 
 
         # input sanity check  
         if config["models_prefix"].startswith("MAG"):
