@@ -159,7 +159,7 @@ Instances of said class are indeed obtained starting from a configuration dictio
 Fine-tuning SPECTER first requires the download of the dataset to be used for classification, namely *Scidocs*. 
 To do so, simply run the following: 
 ```bash
-cd MLP_Classification && commons/getdata.sh
+cd MLP_Classification && bash commons/getdata.sh
 ```
 This will download the data folder where it needs to be to be seaminglessly accessed by the various scripts that would need it. 
 
