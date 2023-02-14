@@ -171,7 +171,7 @@ These models (8 in total, with an individual size of almost 450 MB, amounting to
 If you plan on reproducing our results in Colab, then you may simply copy and pasting the following lines at the beginning of your notebook to download the data and the already trained models to Colab runtime: 
 ```bash
 !pip install gdown  # used to download the data and the trained models
-!git clone "https://github.com/fracapuano/deep_NLP"
+!git clone "https://github.com/fracapuano/Spectroid"
 %cd deep_NLP/MLP_Classification
 !commons/getdata.sh
 !gdown --folder https://drive.google.com/drive/folders/14NAz5m6pOUlWq-kf5nGq7LWWSEhJzqOs -O trainedmodels
