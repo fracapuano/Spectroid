@@ -42,7 +42,7 @@ $ pip install overrides==3.1.0
 The code here presented requires some additional files in additional folder. To download these please run: 
 
 ```bash
-$ bash/download.sh
+$ bash bash/download.sh
 ```
 
 In particular, in the `pretrained_models` folder one could find the two models we trained: SPECTER and SPECTROID. 
