@@ -129,3 +129,14 @@ dmypy.json
 .pyre/
 
 .DS_Store
+
+*/.DS_Store/
+
+# data folder 
+*/data/
+
+# wandb
+*/wandb/
+
+*/trainedmodels/
+*/checkpoints/
