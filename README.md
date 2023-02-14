@@ -172,9 +172,10 @@ If you plan on reproducing our results in Colab, then you may simply copy and pa
 ```bash
 !pip install gdown  # used to download the data and the trained models
 !git clone "https://github.com/fracapuano/Spectroid"
-%cd deep_NLP/MLP_Classification
+%cd Spectroid/MLP_Classification
 !commons/getdata.sh
 !gdown --folder https://drive.google.com/drive/folders/14NAz5m6pOUlWq-kf5nGq7LWWSEhJzqOs -O trainedmodels
 ```
-
 However, to avoid having to download the trained models at each instantiation of a different Colab runtime, we highly suggest using [the Google Drive link provided before](https://drive.google.com/drive/folders/14NAz5m6pOUlWq-kf5nGq7LWWSEhJzqOs?usp=share_link).
+
+>*Note*: **gdown has been reported to malfunction when used in Colab**. We therefore suggest, in the case in which gdown does not work, to add to personal Google Drives both the data and the trained-models using the corresponding links ([this one](https://drive.google.com/drive/folders/1Tlh55ElWXjtDc5Dsgm8qLhh9BEtEn4sw?usp=share_link) for the data).
