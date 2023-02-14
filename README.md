@@ -149,3 +149,32 @@ python scidocs/run.py
 --val_or_test test 
 --n-jobs 12
 ```
+
+# Classification Heads Extension
+This whole extension is presented [in this notebook](https://github.com/fracapuano/deep_NLP/blob/main/MLP_Classification/Specter_FineTuning.ipynb), which makes use of various scripts and utils functions inside `MLP_Classification/commons`. Amongst the various features implemented, it is certainly crucial the role of the `Experiment` class as API for a rapid managament of the experimental setting considered, particularly for what concerns the architecture and training hyper-parameters. 
+
+Instances of said class are indeed obtained starting from a configuration dictionary which is used to swiftly create the architecture and training procedure. 
+
+## 0-Downloads
+Fine-tuning SPECTER first requires the download of the dataset to be used for classification, namely *Scidocs*. 
+To do so, simply run the following: 
+```bash
+cd MLP_Classification && commons/getdata.sh
+```
+This will download the data folder where it needs to be to be seaminglessly accessed by the various scripts that would need it. 
+
+
+Since the overall training of the **4** classification that we ended up testing might require up to 6 hours, we also provide a link to the our already-trained models. 
+
+These models (8 in total, with an individual size of almost 450 MB, amounting to a total of almost 4 GB of trained models) can be downloaded from [here](https://drive.google.com/drive/folders/14NAz5m6pOUlWq-kf5nGq7LWWSEhJzqOs?usp=share_link). 
+
+If you plan on reproducing our results in Colab, then you may simply copy and pasting the following lines at the beginning of your notebook to download the data and the already trained models to Colab runtime: 
+```bash
+!pip install gdown  # used to download the data and the trained models
+!git clone "https://github.com/fracapuano/deep_NLP"
+%cd deep_NLP/MLP_Classification
+!commons/getdata.sh
+!gdown --folder https://drive.google.com/drive/folders/14NAz5m6pOUlWq-kf5nGq7LWWSEhJzqOs -O trainedmodels
+```
+
+However, to avoid having to download the trained models at each instantiation of a different Colab runtime, we highly suggest using [the Google Drive link provided before](https://drive.google.com/drive/folders/14NAz5m6pOUlWq-kf5nGq7LWWSEhJzqOs?usp=share_link).
