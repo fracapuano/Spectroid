@@ -9,3 +9,10 @@ tqdm
 fastlangid
 kaggle
 gdown
+datasets
+numpy
+rich
+scikit_learn
+torch
+transformers<4.7, >=4.1
+wandb

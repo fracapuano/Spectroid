@@ -60,7 +60,8 @@ class Trainer:
         # set training mode
         self.model.train()
         step = 0
-        for epoch in (training_bar:=tqdm(range(n_epochs))): 
+        training_bar=tqdm(range(n_epochs))
+        for epoch in training_bar: 
             # loop over training data
             for batch in self.train_loader:
                 labels = batch["labels"].to(device)
