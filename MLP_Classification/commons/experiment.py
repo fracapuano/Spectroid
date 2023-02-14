@@ -106,7 +106,7 @@ class Experiment:
             total_params = sum(
                 param.numel() for param in self.model.parameters()
             )
-            print("Number of parameters (MeSH model): {:.4e}".format(total_params))
+            print(f"Number of parameters ({self.task} model)"+": {:.4e}".format(total_params))
 
     def perform_training(self):
         """Performs training using prompted configuration."""
